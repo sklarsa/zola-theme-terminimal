@@ -11,14 +11,15 @@
     <title>{%- block title %}{{ config.title }}{% endblock title -%}</title>
     {{ head_macros::head(config=config) }}
 
-    {%- if config.generate_feed %}
-    {%- if "rss" in config.feed_filename %}
+    {%- if config.generate_feeds %}
+    {%- set feed_filename = config.feed_filenames | first | default(value="atom.xml") %}
+    {%- if "rss" in feed_filename %}
     {% set feed_type = 'rss+xml' %}
     {%- else %}
     {% set feed_type = 'atom+xml' %}
     {% endif -%}
     <link rel="alternate" type="application/{{ feed_type }}" title="RSS"
-        href="{{ get_url(path=config.feed_filename) | safe }}">
+        href="{{ get_url(path=feed_filename) | safe }}">
     {% endif -%}
 
     {%- if config.extra.favicon %}
